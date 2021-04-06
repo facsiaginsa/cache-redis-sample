@@ -6,18 +6,18 @@ const util = require("util");
 
 const app = express();
 const cache = redis.createClient({
-  host: "localhost",
-  port: 6379,
+  host: process.env.REDIS_HOST,
+  port: parseInt(process.env.REDIS_PORT),
   socket_keepalive: true,
 });
 cache.get = util.promisify(cache.get);
 
 const minioClient = new Minio.Client({
-  endPoint: "10.14.35.137",
-  port: 9000,
+  endPoint: process.env.MINIO_HOST,
+  port: parseInt(process.env.MINIO_PORT),
   useSSL: false,
-  accessKey: "irs",
-  secretKey: "irswindigital#1",
+  accessKey: process.env.MINIO_ACCESS_KEY,
+  secretKey: process.env.MINIO_SECRET_KEY,
 });
 
 const redisCache = async (req, res, next) => {
